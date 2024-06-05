@@ -19,6 +19,7 @@ This modification changes the experience points (XP) gain in the Arena for the g
 ### Decompilation and Code Analysis
 
 The `TaleWorlds.CampaignSystem.dll` was decompiled using dnSpy. The relevant code for XP calculation in the Arena is located in `TaleWorlds.CampaignSystem.GameComponents.DefaultCombatXPModel`.
+![](https://github.com/Aardenfell/M-BIIarenaXP/blob/main/files/images/dnySpy1.png)
 
 ```csharp
 // Token: 0x06001537 RID: 5431 RVA: 0x00061F70 File Offset: 0x00060170
@@ -61,18 +62,24 @@ The relevant code would be:<br/>
 Using HxD, the following hexadecimal values were identified and modified:
 
 1. **Practice Fights:**
-    - Original: `00 00 80 3D` (0.0625f)
-    - Modified: `00 00 00 3F` (0.50f)
+    - Original: `00 00 80 3D` (0.0625f) <br/>
+![](https://github.com/Aardenfell/M-BIIarenaXP/blob/main/files/images/practiceBefore.png)
+    - Modified: `00 00 00 3F` (0.50f) <br/>
+![](https://github.com/Aardenfell/M-BIIarenaXP/blob/main/files/images/practiceAfter.png)
 
 2. **Tournaments:**
-    - Original: `C3 F5 A8 3E` (0.33f)
-    - Modified: `00 00 00 3F` (0.50f)
+    - Original: `C3 F5 A8 3E` (0.33f) <br/>
+![](https://github.com/Aardenfell/M-BIIarenaXP/blob/main/files/images/tourneyBefore.png)
+    - Modified: `00 00 00 3F` (0.50f) <br/>
+![](https://github.com/Aardenfell/M-BIIarenaXP/blob/main/files/images/tourneyAfter.png)
 
-The values can be found after the hex sequence: `2B 21 22 00 00 80 3F 2B 1A 22 66 66 66 3F 2B 13`.
+The values can be found after the hex sequence: `2B 21 22 00 00 80 3F 2B 1A 22 66 66 66 3F 2B 13` (use CTRL+F).
 
 ### File Modification
 
-After editing the hexadecimal values, the modified `TaleWorlds.CampaignSystem.dll` was saved and replaced in the game's bin folder. It is recommended to keep a copy of the original DLL file as a backup.
+After editing the hexadecimal values, the modified `TaleWorlds.CampaignSystem.dll` was saved and replaced in the game's bin folder. It is recommended to keep a copy of the original DLL file as a backup. <br/>
+You can also throw the modified dll back into dnSpy to see if the values have changed. <br/>
+![](https://github.com/Aardenfell/M-BIIarenaXP/blob/main/files/images/dnySpy3.png)
 
 ## Usage
 
@@ -88,5 +95,5 @@ This repository is for personal reference and documentation of the modification 
 
 ## Download
 
-[Virus Total](enter)<br/>
-[DLL File](enter)
+[Virus Total](https://www.virustotal.com/gui/file/ee1400b43930433d58e7e924501d9b9788e6f054b7c7d22e82f35a45c296e188?nocache=1)<br/>
+[Release](https://github.com/Aardenfell/M-BIIarenaXP/releases/tag/1)
