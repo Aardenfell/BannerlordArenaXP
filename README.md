@@ -1,99 +1,42 @@
-# Arena XP Gain Modifications for Mount & Blade II Bannerlord
+![Project Status](https://img.shields.io/badge/Status-Completed-Green)
+[![GitHub license](https://img.shields.io/badge/license-MIT-green)](https://github.com/Aardenfell/BannerlordArenaXP/blob/main/LICENSE)
+![GitHub issues](https://img.shields.io/github/issues/Aardenfell/BannerlordArenaXP)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Aardenfell/BannerlordArenaXP)
 
-## Overview
+![GitHub stars](https://img.shields.io/github/stars/Aardenfell/BannerlordArenaXP?style=social)
+![GitHub stars](https://img.shields.io/github/forks/Aardenfell/BannerlordArenaXP?style=social)
+![GitHub stars](https://img.shields.io/github/watchers/Aardenfell/BannerlordArenaXP?style=social)
+![GitHub follow](https://img.shields.io/github/followers/Aardenfell?label=Follow&style=social)
+<br>
+# BannerlordArenaXP
 
-This modification changes the experience points (XP) gain in the Arena for the game. Normally, players gain 0.0625f% XP during practice fights and 0.33f% XP during tournaments. This modification increases these values to 0.50f% for both types of Arena combat, allowing players to earn more XP.
+This modification enhances the experience points (XP) gain in the Arena for Mount & Blade II: Bannerlord. Normally, players gain 0.0625f% XP during practice fights and 0.33f% XP during tournaments. This modification increases these values to 0.50f% for both types of Arena combat, allowing players to earn more XP.
+## [Documentation](https://github.com/Aardenfell/BannerlordArenaXP/wiki)
 
-## Changes Made
+For detailed technical documentation, including decompilation, code analysis, and hexadecimal editing, please refer to the [Wiki](https://github.com/Aardenfell/BannerlordArenaXP/wiki). <br>
 
-1. **Original XP Values:**
-    - Practice Fights: 0.0625f%
-    - Tournaments: 0.33f%
+## Features
 
-2. **Modified XP Values:**
-    - Practice Fights: 0.50f%
-    - Tournaments: 0.50f%
+- Increases XP gain in the Arena for both practice fights and tournaments.
+- Easy installation process.
+- Customizable XP values for advanced users.
+## Installation 
 
-## Technical Details
+1. **Download the Modification Files:** Obtain the provided modified `TaleWorlds.CampaignSystem.dll` from the [Release](https://github.com/Aardenfell/BannerlordArenaXP/releases) section of the repository.
+2. **Backup Original Files:** Before proceeding, ensure to create a backup of the original `TaleWorlds.CampaignSystem.dll` located in the game's bin folder.
+3. **Replace Original DLL:** Replace the original `TaleWorlds.CampaignSystem.dll` with the provided modified DLL file.
 
-### Decompilation and Code Analysis
+**Q: Can I use different XP values?**  
+A: Yes, you can customize the XP values by modifying the provided DLL using HxD.
 
-The `TaleWorlds.CampaignSystem.dll` was decompiled using dnSpy. The relevant code for XP calculation in the Arena is located in `TaleWorlds.CampaignSystem.GameComponents.DefaultCombatXPModel`.
-![](https://github.com/Aardenfell/M-BIIarenaXP/blob/main/files/images/dnySpy1.png)
+**Q: Is it safe to replace the original DLL?**  
+A: Yes, it is safe. However, it's recommended to back up the original DLL file as a precaution.
 
-```csharp
-// Token: 0x06001537 RID: 5431 RVA: 0x00061F70 File Offset: 0x00060170
-		public override void GetXpFromHit(CharacterObject attackerTroop, CharacterObject captain, CharacterObject attackedTroop, PartyBase party, int damage, bool isFatal, CombatXpModel.MissionTypeEnum missionType, out int xpAmount)
-		{
-			int num = attackedTroop.MaxHitPoints();
-			MilitaryPowerModel militaryPowerModel = Campaign.Current.Models.MilitaryPowerModel;
-			float defaultTroopPower = militaryPowerModel.GetDefaultTroopPower(attackedTroop);
-			float defaultTroopPower2 = militaryPowerModel.GetDefaultTroopPower(attackerTroop);
-			float leaderModifier = 0f;
-			float contextModifier = 0f;
-			if (((party != null) ? party.MapEvent : null) != null)
-			{
-				contextModifier = militaryPowerModel.GetContextModifier(attackedTroop, party.Side, party.MapEvent.SimulationContext);
-				leaderModifier = party.MapEventSide.LeaderSimulationModifier;
-			}
-			float troopPower = militaryPowerModel.GetTroopPower(defaultTroopPower, leaderModifier, contextModifier);
-			float troopPower2 = militaryPowerModel.GetTroopPower(defaultTroopPower2, leaderModifier, contextModifier);
-			float num2 = 0.4f * (troopPower2 + 0.5f) * (troopPower + 0.5f) * (float)(MathF.Min(damage, num) + (isFatal ? num : 0));
-			num2 *= ((missionType == CombatXpModel.MissionTypeEnum.NoXp) ? 0f : ((missionType == CombatXpModel.MissionTypeEnum.PracticeFight) ? 0.0625f : ((missionType == CombatXpModel.MissionTypeEnum.Tournament) ? 0.33f : ((missionType == CombatXpModel.MissionTypeEnum.SimulationBattle) ? 0.9f : ((missionType == CombatXpModel.MissionTypeEnum.Battle) ? 1f : 1f)))));
-			ExplainedNumber explainedNumber = new ExplainedNumber(num2, false, null);
-			if (party != null)
-			{
-				this.GetBattleXpBonusFromPerks(party, ref explainedNumber, attackerTroop);
-			}
-			if (captain != null && captain.IsHero && captain.GetPerkValue(DefaultPerks.Leadership.InspiringLeader))
-			{
-				explainedNumber.AddFactor(DefaultPerks.Leadership.InspiringLeader.SecondaryBonus, DefaultPerks.Leadership.InspiringLeader.Name);
-			}
-			xpAmount = MathF.Round(explainedNumber.ResultNumber);
-		}
-```
-The relevant code would be:<br/>
-`missionType == CombatXpModel.MissionTypeEnum.PracticeFight) ? 0.0625f ` for Practice Fights <br/>
-& <br/>
-`missionType == CombatXpModel.MissionTypeEnum.Tournament` for Tournaments.<br/>
+**Q: Will this modification affect my save files?**  
+A: No, this modification only adjusts XP gain values in the Arena and should not affect save files or gameplay outside of the Arena.
 
-### Hexadecimal Editing
+**Q: Is this mod compatible with other mods that affect arena XP?**  
+A: Not Likely.
 
-Using HxD, the following hexadecimal values were identified and modified:
-
-1. **Practice Fights:**
-    - Original: `00 00 80 3D` (0.0625f) <br/>
-![](https://github.com/Aardenfell/M-BIIarenaXP/blob/main/files/images/practiceBefore.png)
-    - Modified: `00 00 00 3F` (0.50f) <br/>
-![](https://github.com/Aardenfell/M-BIIarenaXP/blob/main/files/images/practiceAfter.png)
-
-2. **Tournaments:**
-    - Original: `C3 F5 A8 3E` (0.33f) <br/>
-![](https://github.com/Aardenfell/M-BIIarenaXP/blob/main/files/images/tourneyBefore.png)
-    - Modified: `00 00 00 3F` (0.50f) <br/>
-![](https://github.com/Aardenfell/M-BIIarenaXP/blob/main/files/images/tourneyAfter.png)
-
-The values can be found after the hex sequence: `2B 21 22 00 00 80 3F 2B 1A 22 66 66 66 3F 2B 13` (use CTRL+F).
-
-### File Modification
-
-After editing the hexadecimal values, the modified `TaleWorlds.CampaignSystem.dll` was saved and replaced in the game's bin folder. It is recommended to keep a copy of the original DLL file as a backup. <br/>
-You can also throw the modified dll back into dnSpy to see if the values have changed. <br/>
-![](https://github.com/Aardenfell/M-BIIarenaXP/blob/main/files/images/dnySpy3.png)
-
-## Usage
-
-1. **Using the Provided DLL:**
-    - Replace the original `TaleWorlds.CampaignSystem.dll` in the game’s bin folder with the provided modified DLL.
-
-2. **Customizing XP Values:**
-    - If you wish to use different XP values, substitute the provided edited values with your desired values in HxD and save the DLL.
-
-## Disclaimer
-
-This repository is for personal reference and documentation of the modification process. Make sure to back up original files before making any changes.
-
-## Download
-
-[Virus Total](https://www.virustotal.com/gui/file/ee1400b43930433d58e7e924501d9b9788e6f054b7c7d22e82f35a45c296e188?nocache=1)<br/>
-[Release](https://github.com/Aardenfell/M-BIIarenaXP/releases/tag/1)
+**Q: Will you update this mod?**
+A: Likely Not. This was a passion project born out of my frustration with the XP given from the Arena. Since I no longer play the game, I probably won't continue updating this.
